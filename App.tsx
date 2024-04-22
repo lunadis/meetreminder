@@ -1,16 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   SafeAreaView,
   SafeAreaProvider,
   initialWindowMetrics,
 } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import getRoutes from "./src/screens/routing";
 
 export default function App() {
+  const stack = createNativeStackNavigator();
+  const routes = getRoutes();
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <SafeAreaView style={styles.container}>
-        <Text>Testando asdasdasdsadasdasdsaasdsadsa!</Text>
+        <NavigationContainer>
+          <stack.Navigator>
+            {routes.map((route) => {
+              return (
+                <stack.Screen
+                  name={route.title}
+                  component={route.screen}
+                  options={route.navigationOptions}
+                />
+              );
+            })}
+          </stack.Navigator>
+        </NavigationContainer>
         <StatusBar style="auto" />
       </SafeAreaView>
     </SafeAreaProvider>
